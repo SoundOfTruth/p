@@ -30,7 +30,6 @@ namespace Generator1
         private bool isRunned = false;
         private bool isConnected = false;
         private bool deviceBufferIsOverflow = false;
-        private static IPEndPoint cringe = new IPEndPoint(IPAddress.Any, 0);
         private IPEndPoint serverAddress;
         public MainWindow()
         {
