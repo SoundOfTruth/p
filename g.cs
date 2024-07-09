@@ -43,8 +43,7 @@ namespace Generator1
             {
                 try
                 {
-                    //UdpReceiveResult recivedBytes = await udpClient.ReceiveAsync(); byte checkedByte = recivedBytes.Buffer[32];
-                    byte[] recivedBytes = udpClient.Receive(ref cringe); byte checkedByte = recivedBytes[32];
+                    var recivedBytes = udpClient.ReceiveAsync(); byte checkedByte = recivedBytes.Result.Buffer[32];
                     if (checkedByte <= 53 && checkedByte >= 51)
                     {
                         deviceBufferIsOverflow = true;
@@ -77,10 +76,10 @@ namespace Generator1
                         byte[] buffer = new byte[countOfBytes];
                         fileStream.Position = bytesRead;
                         fileStream.Read(buffer, 0, countOfBytes);
-                        bytesRead += countOfBytes;
                         RtpHeader rtpHeader = new RtpHeader(pt);
                         byte[] data = rtpHeader.getPacket(buffer, sequenceNumber);
                         udpClient.Send(data, data.Length, serverAddress);
+                        bytesRead += countOfBytes;
                         sequenceNumber += 1;
                         Thread.Sleep(sendingDelay);
                     }
@@ -107,7 +106,7 @@ namespace Generator1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    //
                 }
             }
             closeFileStream();
